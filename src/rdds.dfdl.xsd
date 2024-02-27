@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+           xmlns:dfdl="http://www.ogf.org/dfdl/dfdl-1.0/"
+           xmlns:daf="urn:ogf:dfdl:2013:imp:daffodil.apache.org:2018:ext"
+           xmlns:fn="http://www.w3.org/2005/xpath-functions">
+
+
+
+<!-- 
+     DFDL Schema for the select components of RDDS protocol.
+     Author: Larry Barber, Nteligen, LLC.
+     Version: 0.1
+     Date: February 2024
+   -->
+    <xs:annotation>
+        <xs:appinfo source="http://www.ogf.org/dfdl/">
+            <dfdl:format alignmentUnits="bits" lengthUnits="bits" representation="binary" binaryNumberRep="binary"
+            	         byteOrder="bigEndian" bitOrder="mostSignificantBitFirst" choiceLengthKind="implicit" lengthKind="implicit" alignment="1" encodingErrorPolicy="replace" 
+                         binaryFloatRep="ieee" calendarPatternKind="implicit" documentFinalTerminatorCanBeMissing="yes" 
+                         emptyValueDelimiterPolicy="none" escapeSchemeRef="" fillByte="f" floating="no" ignoreCase="no" 
+                         initiatedContent="no" initiator="" leadingSkip="0" separator="" separatorPolicy="suppressed" 
+                         outputNewLine="%CR;%LF;"
+                         textStandardZeroRep="0" textStandardInfinityRep="Inf" textStandardExponentRep="E" 
+                         textStandardNaNRep="NaN" textNumberPattern="#,##0.###;-#,##0.###" textNumberRounding="explicit" 
+                         textNumberRoundingMode="roundUnnecessary" textNumberRoundingIncrement="0" textStandardGroupingSeparator="," 
+                         separatorPosition="infix" sequenceKind="ordered" terminator="" textBidi="no" textNumberCheckPolicy="strict" 
+                         textNumberRep="standard" textOutputMinLength="0" textPadKind="none" textStandardBase="10" textTrimKind="none" trailingSkip="0" truncateSpecifiedLengthString="no" 
+                         utf16Width="fixed" encoding="US-ASCII" nilKind="literalValue" nilValueDelimiterPolicy="none" occursCountKind="parsed"
+						 binaryBooleanTrueRep="1" binaryBooleanFalseRep="0"
+                         />
+        </xs:appinfo>
+    </xs:annotation>
+		
+		
+
+	<xs:element name="RDDS">
+        <xs:complexType>
+			<xs:sequence>
+        		<xs:element ref="Message_Header" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+
+	<xs:element name="Message_Header">
+        <xs:complexType>
+			<xs:sequence>
+			<xs:element name="Sync_Flag" type="xs:hexBinary" dfdl:length="16" dfdl:lengthKind="explicit" >
+<!--				<xs:annotation>
+					<xs:appinfo source="http://www.ogf.org/dfdl/">
+						<dfdl:assert message="Byte 1 of the signature must be 0x4301"><![CDATA[{ . eq 17153 }]]></dfdl:assert>
+					</xs:appinfo>
+				</xs:annotation> -->
+			</xs:element>
+			<xs:element name="Header_Version"     type="hexBin16" />
+			<xs:element name="Node_Identifier"    type="hexBin16" />
+			<xs:element name="Stream_Identifier"  type="hexBin16" />
+			<xs:element name="Sequence_Number"    type="hexBin16" />
+			<xs:element name="Message_Identifier" type="hexBin16" />
+			<xs:element name="Message_Length"     type="unsignedint16" />
+			<xs:element ref="Flags" />
+			<xs:element name="Time"               type="hexBin64" />
+			<xs:element name="Message_Check"      type="hexBin32" />
+			<xs:element name="Header_Check"       type="hexBin32" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="Flags">
+        <xs:complexType>
+			<xs:sequence>
+				<xs:element name="Acknowledge_Request" type="boolean" />
+				<xs:element name="Acknowledgement"     type="boolean" />
+				<xs:element name="Request"             type="boolean" />
+				<xs:element name="Extended_Header"     type="boolean" />
+				<xs:element name="Metadata"            type="boolean" />
+				<xs:element name="Reserved"            type="unsignedint11" >
+					<xs:annotation>
+						<xs:appinfo source="http://www.ogf.org/dfdl/">
+							<dfdl:assert message="Reserved Flags must be 0"><![CDATA[{ . eq 0 }]]></dfdl:assert>
+						</xs:appinfo>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+
+	<xs:simpleType name="boolean" dfdl:length="1" dfdl:lengthKind="explicit">
+		<xs:restriction base="xs:unsignedInt"/>
+	</xs:simpleType>
+
+	<xs:simpleType name="unsignedint1" dfdl:length="1" dfdl:lengthKind="explicit">
+		<xs:restriction base="xs:unsignedInt"/>
+	</xs:simpleType>
+
+	<xs:simpleType name="unsignedint8" dfdl:length="8" dfdl:lengthKind="explicit">
+		<xs:restriction base="xs:unsignedInt"/>
+	</xs:simpleType>
+    
+    <xs:simpleType name="unsignedint11" dfdl:length="11" dfdl:lengthKind="explicit">
+        <xs:restriction base="xs:unsignedInt"/>
+    </xs:simpleType>
+
+	<xs:simpleType name="unsignedint16" dfdl:length="16" dfdl:lengthKind="explicit">
+		<xs:restriction base="xs:unsignedInt"/>
+	</xs:simpleType>
+    
+    <xs:simpleType name="hexBin16" dfdl:length="16" dfdl:lengthKind="explicit">
+        <xs:restriction base="xs:hexBinary"/>
+    </xs:simpleType>
+
+    <xs:simpleType name="hexBin32" dfdl:length="32" dfdl:lengthKind="explicit">
+        <xs:restriction base="xs:hexBinary"/>
+    </xs:simpleType>
+
+    <xs:simpleType name="hexBin64" dfdl:length="64" dfdl:lengthKind="explicit">
+        <xs:restriction base="xs:hexBinary"/>
+    </xs:simpleType>
+
+	<xs:simpleType name="unsignedint32" dfdl:length="32" dfdl:lengthKind="explicit">
+		<xs:restriction base="xs:unsignedInt"/>
+	</xs:simpleType>
+
+</xs:schema>
