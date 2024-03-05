@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+           xmlns:dfdl="http://www.ogf.org/dfdl/dfdl-1.0/"
+           xmlns:daf="urn:ogf:dfdl:2013:imp:daffodil.apache.org:2018:ext"
+           xmlns:fn="http://www.w3.org/2005/xpath-functions">
+
+
+
+<!-- 
+     DFDL Schema for the select components of SCPI protocol.
+     Author: Larry Barber, Nteligen, LLC.
+     Version: 0.1
+     Date: March 2024
+   -->
+    <xs:annotation>
+        <xs:appinfo source="http://www.ogf.org/dfdl/">
+            <dfdl:format alignmentUnits="bytes" lengthUnits="bits" representation="binary" binaryNumberRep="binary"
+            	         byteOrder="bigEndian" bitOrder="mostSignificantBitFirst" choiceLengthKind="implicit" lengthKind="implicit" alignment="1" encodingErrorPolicy="replace" 
+                         binaryFloatRep="ieee" calendarPatternKind="implicit" documentFinalTerminatorCanBeMissing="yes" 
+                         emptyValueDelimiterPolicy="none" escapeSchemeRef="" fillByte="f" floating="no" ignoreCase="no" 
+                         initiatedContent="no" initiator="" leadingSkip="0" separator="" separatorPolicy="suppressed" 
+                         outputNewLine="%CR;%LF;"
+                         textStandardZeroRep="0" textStandardInfinityRep="Inf" textStandardExponentRep="E" 
+                         textStandardNaNRep="NaN" textNumberPattern="#,##0.###;-#,##0.###" textNumberRounding="explicit" 
+                         textNumberRoundingMode="roundUnnecessary" textNumberRoundingIncrement="0" textStandardGroupingSeparator="," 
+                         separatorPosition="infix" sequenceKind="ordered" terminator="" textBidi="no" textNumberCheckPolicy="strict" 
+                         textNumberRep="standard" textOutputMinLength="0" textPadKind="none" textStandardBase="10" textTrimKind="none" trailingSkip="0" truncateSpecifiedLengthString="no" 
+                         utf16Width="fixed" encoding="US-ASCII" nilKind="literalValue" nilValueDelimiterPolicy="none" occursCountKind="parsed"
+						 binaryBooleanTrueRep="1" binaryBooleanFalseRep="0"
+                         />
+        </xs:appinfo>
+    </xs:annotation>
+		
+		
+	<xs:group name="Commands">
+			<xs:sequence>
+				<xs:element name="CmdLine" maxOccurs="unbounded" dfdl:terminator="%NL;">
+					<xs:complexType>
+						<xs:sequence dfdl:separator=";" dfdl:separatorPosition="infix" >
+							<xs:element name="Cmd" type="xs:string" maxOccurs="unbounded" dfdl:lengthKind="delimited" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+	</xs:group>
+
+
+
+	<xs:element name="SCPI">
+        <xs:complexType>
+			<xs:group ref="Commands" />
+<!---				<xs:choice>
+					<xs:element ref="Power_Supply" />
+					<xs:element ref="Power_Supply_Setup" />
+				</xs:choice>-->
+		</xs:complexType>
+	</xs:element>
+
+
+
+</xs:schema>
