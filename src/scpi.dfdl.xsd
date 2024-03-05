@@ -34,7 +34,14 @@
 		
 	<xs:group name="Commands">
 			<xs:sequence>
-				<xs:element name="CmdLine" maxOccurs="unbounded" dfdl:terminator="%NL;">
+				<xs:element name="CmdLineCR" maxOccurs="unbounded" dfdl:terminator="%CR;%NL;">
+					<xs:complexType>
+						<xs:sequence dfdl:separator=";" dfdl:separatorPosition="infix" >
+							<xs:element name="Cmd" type="xs:string" maxOccurs="unbounded" dfdl:lengthKind="delimited" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="CmdLine" maxOccurs="1" dfdl:terminator="%NL;">
 					<xs:complexType>
 						<xs:sequence dfdl:separator=";" dfdl:separatorPosition="infix" >
 							<xs:element name="Cmd" type="xs:string" maxOccurs="unbounded" dfdl:lengthKind="delimited" />
