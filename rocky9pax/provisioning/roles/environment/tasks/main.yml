@@ -45,19 +45,19 @@
       - mesa-dri-drivers
   become: yes
 
-- name: Install Java 17
+- name: Install Java 11
   dnf:
     name:
-      - java-17-openjdk
-      - java-17-openjdk-devel
+      - java-11-openjdk
+      - java-11-openjdk-devel
   become: yes
 
 - name: Set Java Version
-  shell: sudo update-alternatives --set java /usr/lib/jvm/java-17-openjdk-17.0.10.0.7-2.el9.x86_64/bin/java
+  shell: sudo update-alternatives --set java /usr/lib/jvm/java-11-openjdk-11.0.22.0.7-2.el9.x86_64/bin/java
   become: yes
 
 - name: Set Java Compiler Version
-  shell: sudo update-alternatives --set javac /usr/lib/jvm/java-17-openjdk-17.0.10.0.7-2.el9.x86_64/bin/javac
+  shell: sudo update-alternatives --set javac /usr/lib/jvm/java-11-openjdk-11.0.22.0.7-2.el9.x86_64/bin/javac
   become: yes
 
 - name: Copy Java-home.sh 
