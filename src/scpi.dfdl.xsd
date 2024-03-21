@@ -18,8 +18,8 @@
             	         byteOrder="bigEndian" bitOrder="mostSignificantBitFirst" choiceLengthKind="implicit" lengthKind="implicit" alignment="1" encodingErrorPolicy="replace" 
                          binaryFloatRep="ieee" calendarPatternKind="implicit" documentFinalTerminatorCanBeMissing="yes" 
                          emptyValueDelimiterPolicy="none" escapeSchemeRef="" fillByte="f" floating="no" ignoreCase="no" 
-                         initiatedContent="no" initiator="" leadingSkip="0" separator="" separatorPolicy="suppressed" 
-                         outputNewLine="%CR;%LF;"
+                         initiatedContent="no" initiator="" leadingSkip="0" separator="" separatorSuppressionPolicy="anyEmpty" 
+                         outputNewLine="%LF;"
                          textStandardZeroRep="0" textStandardInfinityRep="Inf" textStandardExponentRep="E" 
                          textStandardNaNRep="NaN" textNumberPattern="#,##0.###;-#,##0.###" textNumberRounding="explicit" 
                          textNumberRoundingMode="roundUnnecessary" textNumberRoundingIncrement="0" textStandardGroupingSeparator="," 
@@ -31,162 +31,78 @@
         </xs:appinfo>
     </xs:annotation>
 		
-		
-<!-- WORKING CODE PARSES OUT EACH COMMAND - EVEN MULTIPLE ON SINGLE LINES
-	<xs:group name="Commands">
-			<xs:sequence>
-				<xs:element name="CmdLineCR" minOccurs="0" maxOccurs="unbounded" dfdl:terminator="%CR;%NL;">
-					<xs:complexType>
-						<xs:sequence dfdl:separator=";" dfdl:separatorPosition="infix" >
-							<xs:element name="Cmd" type="xs:string" maxOccurs="unbounded" dfdl:lengthKind="delimited" />
-						</xs:sequence>
-					</xs:complexType>
-				</xs:element>
-				<xs:element name="CmdLine" maxOccurs="unbounded" dfdl:terminator="%NL;">
-					<xs:complexType>
-						<xs:sequence dfdl:separator=";" dfdl:separatorPosition="infix" >
-							<xs:element name="Cmd" type="xs:string" maxOccurs="unbounded" dfdl:lengthKind="delimited" />
-						</xs:sequence>
-					</xs:complexType>
-				</xs:element>
-			</xs:sequence>
-	</xs:group>
--->
-
-	<xs:element name="SCPI">
+	<xs:element name="SCPI" >
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element name="Commands" minOccurs="0" maxOccurs="unbounded" dfdl:occursCountKind="implicit" >
+				<xs:element name="CmdLine_CR" minOccurs="0" maxOccurs="unbounded" dfdl:terminator="%CR;%NL;">
 					<xs:complexType>
-                        <xs:sequence>
-							<xs:choice>
-								<xs:group ref="Cmd_INIT" />
-								<xs:group ref="Cmd_OUTP" />
-								<xs:group ref="Cmd_FREQ" />
-								<xs:group ref="Cmd_SOUR" />
-<!--							<xs:element name="POW"    type="xs:string" dfdl:lengthKind="pattern" dfdl:lengthPattern=":POW " dfdl:encoding="ISO-8859-1" />
-							<xs:element name="DBM"    type="xs:string" dfdl:lengthKind="pattern" dfdl:lengthPattern="^[+\-]?(?=.)(?:0|[1-9]\d*)?(?:\.\d*)?(?:\d[eE][+\-]?\d+)?DBM" dfdl:encoding="ISO-8859-1" />
--->
-							</xs:choice>
-
-							<xs:choice>
-								<xs:element name="CRLF"    type="xs:string" dfdl:lengthKind="pattern" dfdl:lengthPattern="\x0D\x0A" dfdl:encoding="ISO-8859-1" >
-									<xs:annotation>
-										<xs:appinfo source="http://www.ogf.org/dfdl/" >
-											<dfdl:discriminator test="{ (dfdl:valueLength(., 'bytes') gt 0) }" />
-										</xs:appinfo>
-									</xs:annotation>
-								</xs:element>
-								<xs:element name="LF"      type="xs:string" dfdl:lengthKind="pattern" dfdl:lengthPattern="\x0A" dfdl:encoding="ISO-8859-1" >
-									<xs:annotation>
-										<xs:appinfo source="http://www.ogf.org/dfdl/" >
-											<dfdl:discriminator test="{ (dfdl:valueLength(., 'bytes') gt 0) }" />
-										</xs:appinfo>
-									</xs:annotation>
-								</xs:element>
-								<xs:element name="SEMICOLON"  type="xs:string" dfdl:lengthKind="pattern" dfdl:lengthPattern=";" dfdl:encoding="ISO-8859-1" >
-									<xs:annotation>
-										<xs:appinfo source="http://www.ogf.org/dfdl/" >
-											<dfdl:discriminator test="{ (dfdl:valueLength(., 'bytes') gt 0) }" />
-										</xs:appinfo>
-									</xs:annotation>
-								</xs:element>
-							</xs:choice>
+						<xs:sequence dfdl:separator=";" dfdl:separatorPosition="infix" >
+							<!-- array of parts separated by ";" --> 
+							<xs:element name="Cmd" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence  dfdl:separator="%SP;" >
+										<!-- required token separated from any following param by a space -->
+										<!-- array of parts separated by ":" --> 
+										<xs:element name="elements" minOccurs="1" maxOccurs="1">
+											<xs:complexType>
+												<xs:sequence>
+                                                    <xs:element name="prefix" type="xs:string" maxOccurs="1" minOccurs="0" 
+                                                                dfdl:lengthKind="explicit" dfdl:length="1" dfdl:encoding="ISO-8859-1" >
+                                                        <xs:annotation>
+                                                            <xs:appinfo source="http://www.ogf.org/dfdl/">
+                                                                <dfdl:discriminator test="{ xs:string(.) eq ':' }" />
+                                                            </xs:appinfo>
+                                                        </xs:annotation>
+                                                    </xs:element>
+                                                    <xs:sequence  dfdl:separator=":" >
+                                                        <xs:element name="token" type="xs:string" maxOccurs="unbounded" minOccurs="0" dfdl:lengthKind="delimited"/>
+                                                    </xs:sequence>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<!-- array of zero or more param separated by spaces --> 
+										<xs:element name="param" type="xs:string" maxOccurs="unbounded" minOccurs="0" dfdl:lengthKind="delimited"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="CmdLine" minOccurs="1" maxOccurs="1" dfdl:terminator="%NL;">
+					<xs:complexType>
+						<xs:sequence dfdl:separator=";" dfdl:separatorPosition="infix" >
+							<!-- array of parts separated by ";" --> 
+							<xs:element name="Cmd" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence  dfdl:separator="%SP;" >
+										<!-- required token separated from any following param by a space -->
+										<!-- array of parts separated by ":" --> 
+										<xs:element name="elements" minOccurs="1" maxOccurs="1">
+											<xs:complexType>
+												<xs:sequence>
+                                                    <xs:element name="prefix" type="xs:string" maxOccurs="1" minOccurs="0" 
+                                                                dfdl:lengthKind="explicit" dfdl:length="1" dfdl:encoding="ISO-8859-1" >
+                                                        <xs:annotation>
+                                                            <xs:appinfo source="http://www.ogf.org/dfdl/">
+                                                                <dfdl:discriminator test="{ xs:string(.) eq ':' }" />
+                                                            </xs:appinfo>
+                                                        </xs:annotation>
+                                                    </xs:element>
+                                                    <xs:sequence  dfdl:separator=":" >
+                                                        <xs:element name="token" type="xs:string" maxOccurs="unbounded" minOccurs="0" dfdl:lengthKind="delimited"/>
+                                                    </xs:sequence>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<!-- array of zero or more param separated by spaces --> 
+										<xs:element name="param" type="xs:string" maxOccurs="unbounded" minOccurs="0" dfdl:lengthKind="delimited"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
 						</xs:sequence>
 					</xs:complexType>
 				</xs:element>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
-
-
-
-<!---	<xs:element name="XYZ">
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element ref="Commands" minOccurs="0" maxOccurs="unbounded" dfdl:occursCountKind="implicit"/>
-				<xs:choice>
-					<xs:element ref="Power_Supply" />
-					<xs:element ref="Power_Supply_Setup" />
-				</xs:choice>
-			</xs:sequence>
-		</xs:complexType>
-	</xs:element>-->
-
-<xs:group name="Cmd_INIT" >
-	<xs:sequence>
-								<xs:element name="INIT"    type="xs:string" dfdl:lengthKind="pattern" dfdl:lengthPattern="^INIT" dfdl:encoding="ISO-8859-1" >
-									<xs:annotation>
-										<xs:appinfo source="http://www.ogf.org/dfdl/" >
-											<dfdl:discriminator test="{ (dfdl:valueLength(., 'bytes') gt 0) }" />
-										</xs:appinfo>
-									</xs:annotation>
-								</xs:element>
-	</xs:sequence>
-</xs:group>
-
-
-<xs:group name="Cmd_OUTP" >
-	<xs:sequence>
-		<xs:element name="OUTP"    type="xs:string" dfdl:lengthKind="pattern" dfdl:lengthPattern="OUTP " dfdl:encoding="ISO-8859-1" >
-			<xs:annotation>
-				<xs:appinfo source="http://www.ogf.org/dfdl/" >
-					<dfdl:discriminator test="{ (dfdl:valueLength(., 'bytes') gt 0) }" />
-				</xs:appinfo>
-			</xs:annotation>
-		</xs:element>
-		<xs:element name="STATE"   type="xs:string" dfdl:lengthKind="pattern" dfdl:lengthPattern="O(N|FF)" dfdl:encoding="ISO-8859-1" >
-			<xs:annotation>
-				<xs:appinfo source="http://www.ogf.org/dfdl/" >
-					<dfdl:discriminator test="{ (dfdl:valueLength(., 'bytes') gt 0) }" />
-				</xs:appinfo>
-			</xs:annotation>
-		</xs:element>
-	</xs:sequence>
-</xs:group>
-
-<xs:group name="Cmd_FREQ" >
-	<xs:sequence>
-		<xs:element name="FREQ"    type="xs:string" dfdl:lengthKind="pattern" dfdl:lengthPattern=":FREQ " dfdl:encoding="ISO-8859-1" >
-			<xs:annotation>
-				<xs:appinfo source="http://www.ogf.org/dfdl/" >
-					<dfdl:discriminator test="{ (dfdl:valueLength(., 'bytes') gt 0) }" />
-				</xs:appinfo>
-			</xs:annotation>
-		</xs:element>
-		<xs:element name="MHz"     type="xs:string" dfdl:lengthKind="pattern" dfdl:lengthPattern="^[+\-]?(?=.)(?:0|[1-9]\d*)?(?:\.\d*)?(?:\d[eE][+\-]?\d+)?MHz" dfdl:encoding="ISO-8859-1" >
-			<xs:annotation>
-				<xs:appinfo source="http://www.ogf.org/dfdl/" >
-					<dfdl:discriminator test="{ (dfdl:valueLength(., 'bytes') gt 0) }" />
-				</xs:appinfo>
-			</xs:annotation>
-		</xs:element>
-	</xs:sequence>
-</xs:group>
-
-<xs:group name="Cmd_SOUR" >
-	<xs:sequence>
-		<xs:element name="SOUR"    type="xs:string" dfdl:lengthKind="pattern" dfdl:lengthPattern="SOUR:" dfdl:encoding="ISO-8859-1" >
-			<xs:annotation>
-				<xs:appinfo source="http://www.ogf.org/dfdl/" >
-					<dfdl:discriminator test="{ (dfdl:valueLength(., 'bytes') gt 0) }" />
-				</xs:appinfo>
-			</xs:annotation>
-		</xs:element>
-		<xs:element name="VOLT"    type="xs:string" dfdl:lengthKind="pattern" dfdl:lengthPattern="VOLT " dfdl:encoding="ISO-8859-1" >
-			<xs:annotation>
-				<xs:appinfo source="http://www.ogf.org/dfdl/" >
-					<dfdl:discriminator test="{ (dfdl:valueLength(., 'bytes') gt 0) }" />
-				</xs:appinfo>
-			</xs:annotation>
-		</xs:element>
-		<xs:element name="Voltage" type="xs:string" dfdl:lengthKind="pattern" dfdl:lengthPattern="^[+\-]?(?=.)(?:0|[1-9]\d*)?(?:\.\d*)?(?:\d[eE][+\-]?\d+)?" dfdl:encoding="ISO-8859-1" >
-			<xs:annotation>
-				<xs:appinfo source="http://www.ogf.org/dfdl/" >
-					<dfdl:discriminator test="{ (dfdl:valueLength(., 'bytes') gt 0) }" />
-				</xs:appinfo>
-			</xs:annotation>
-		</xs:element>
-	</xs:sequence>
-</xs:group>
 </xs:schema>
