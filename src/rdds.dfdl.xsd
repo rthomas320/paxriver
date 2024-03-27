@@ -18,7 +18,7 @@
             	         byteOrder="bigEndian" bitOrder="mostSignificantBitFirst" choiceLengthKind="implicit" lengthKind="implicit" alignment="1" encodingErrorPolicy="replace" 
                          binaryFloatRep="ieee" calendarPatternKind="implicit" documentFinalTerminatorCanBeMissing="yes" 
                          emptyValueDelimiterPolicy="none" escapeSchemeRef="" fillByte="f" floating="no" ignoreCase="no" 
-                         initiatedContent="no" initiator="" leadingSkip="0" separator="" separatorPolicy="suppressed" 
+                         initiatedContent="no" initiator="" leadingSkip="0" separator="" separatorSuppressionPolicy="anyEmpty"  
                          outputNewLine="%CR;%LF;"
                          textStandardZeroRep="0" textStandardInfinityRep="Inf" textStandardExponentRep="E" 
                          textStandardNaNRep="NaN" textNumberPattern="#,##0.###;-#,##0.###" textNumberRounding="explicit" 
@@ -37,9 +37,10 @@
         <xs:complexType>
 			<xs:sequence>
         		<xs:element ref="Message_Header" />
-				<xs:choice dfdl:choiceDispatchKey="{ Message_Header/Message_Identifier }">
+				<xs:choice>
+				<xs:choice dfdl:choiceDispatchKey="{ xs:string(Message_Header/Message_Identifier) }">
 					<!--xs:element ref="ERR_00" dfdl:choiceBranchKey="00"/><  Marker 00 is illegal -->
-					<xs:element ref="TSPI" dfdl:choiceBranchKey="1"/><!--  1 = Common TSPI -->
+					<xs:element ref="TSPI" dfdl:choiceBranchKey="1" /><!--  1 = Common TSPI -->
 					<xs:element ref="TIME" dfdl:choiceBranchKey="4"/><!--  4 = Time -->
 					<xs:element ref="Pirate_Weather" dfdl:choiceBranchKey="6"/><!--  6 = Pirate Weather -->
 					<xs:element ref="Reference_Point" dfdl:choiceBranchKey="18"/><!--  18 = Reference Point -->
@@ -54,6 +55,14 @@
 					<xs:element ref="CD2_Plot" dfdl:choiceBranchKey="229"/><!--  229 = CD2 Plot -->
 					<xs:element ref="Air_Data_System" dfdl:choiceBranchKey="251"/><!--  251 = Air Data System -->
 					<xs:element ref="Advertisement" dfdl:choiceBranchKey="65534"/><!--  65534 = Advertisement -->
+				</xs:choice>
+					<xs:element name="Unknown_Packet_type" >
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="DataBlob"  type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="{ ../../Message_Header/Message_Length }" />
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
 				</xs:choice>
 			</xs:sequence>
 		</xs:complexType>
@@ -188,6 +197,7 @@
 								</xs:complexType>
 							</xs:element>
 							<xs:element name="Roll"                type="xs:double" />
+                            <xs:element name="Pitch"               type="hexBin64" />
 							<xs:element name="Yaw"                 type="xs:double" />
 							<xs:element name="Roll_Rate"           type="xs:double" />
 							<xs:element name="Pitch_Rate"          type="xs:double" />
