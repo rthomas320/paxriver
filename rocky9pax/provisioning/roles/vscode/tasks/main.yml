@@ -1,0 +1,143 @@
+---
+- name: DNF Update
+  dnf:
+    name: "*"
+    state: latest
+  become: yes
+
+- name: DNF Update Cache
+  dnf:
+    update_cache: yes
+    state: latest
+
+- name: Install Git
+  dnf:
+    name:
+      - git
+    state: present
+  become: yes
+
+- name: YUM Update
+  yum:
+    name: "*"
+    state: latest
+  become: yes
+
+- name: Install Java 11
+  dnf:
+    name:
+      - java-11-openjdk
+      - java-11-openjdk-devel
+    state: present
+  become: yes
+
+- name: Install Java 17
+  dnf:
+    name:
+      - java-17-openjdk
+      - java-17-openjdk-devel
+    state: present
+  become: yes
+
+- name: Set Java Version
+  shell: sudo update-alternatives --set java /usr/lib/jvm/java-11-openjdk-11.0.22.0.7-2.el9.x86_64/bin/java
+  become: yes
+
+- name: Set Java Compiler Version
+  shell: sudo update-alternatives --set javac /usr/lib/jvm/java-11-openjdk-11.0.22.0.7-2.el9.x86_64/bin/javac
+  become: yes
+
+- name: install Server with GUI group
+  shell: sudo dnf -y groupinstall "Server with GUI"
+
+- name: set default graphical
+  shell: sudo systemctl set-default graphical
+
+- name: import Microsoft package keys
+  shell: sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
+
+- name: Setup VS Code Repo
+  copy:
+    src: ../files/vscode.repo
+    dest: /etc/yum.repos.d/
+    mode: 0644
+    owner: root
+    group: root
+  become: yes
+
+- name: dnf check update
+  shell: dnf check-update
+
+- name: Install VS Code
+  dnf:
+    name:
+      - code
+    state: present
+  become: yes
+
+- name: install NodeJS
+  dnf:
+    name:
+      - nodejs
+    state: present
+  become: yes
+
+- name: install yarn
+  shell: sudo npm install --global yarn
+
+- name: Set Timezone
+  timezone:
+    name: America/New_York
+  become: yes
+
+- name: Set DISPLAY value for x-server
+  lineinfile:
+    path: /home/vagrant/.bashrc
+    insertafter: EOF
+    line: 'export DISPLAY="10.0.2.2:0.0"'
+    state: present
+
+- name: Source .bashrc file
+  shell: source /home/vagrant/.bashrc
+
+- name: makecache
+  shell: dnf makecache
+
+- name: Download coursier for scala/sbt install
+  get_url:
+    url: https://github.com/coursier/launchers/raw/master/cs-x86_64-pc-linux.gz
+    dest: /home/vagrant/cs-x86_64-pc-linux.gz
+    mode: 0755
+
+- name: Unzip coursier
+  shell: sudo gunzip /home/vagrant/cs-x86_64-pc-linux.gz
+  args:
+    creates: /home/vagrant/cs-x86_64-pc-linux
+
+- name: Move cs file to /usr/lib
+  shell: sudo mv cs-x86_64-pc-linux /usr/lib/cs
+  args:
+    creates: /usr/lib/cs
+
+- name: Set permissions coursier sbt/scala
+  shell: sudo chmod +x /usr/lib/cs
+
+- name: Copy setup scala script
+  copy:
+    src: ../files/scala-install.sh
+    dest: /home/vagrant/
+    mode: 0755
+    owner: vagrant
+    group: vagrant
+  become: yes
+
+- name: Install sbt/scala
+  shell: /home/vagrant/scala-install.sh
+
+- name: Copy setup git and vscode repo script
+  copy:
+    src: ../files/daffodil-vscode-setup.sh
+    dest: /home/vagrant/
+    mode: 0755
+    owner: vagrant
+    group: vagrant
