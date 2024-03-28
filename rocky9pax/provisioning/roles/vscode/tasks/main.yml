@@ -129,6 +129,7 @@
     mode: 0755
     owner: vagrant
     group: vagrant
+  become: yes
 
 - name: Install sbt/scala
   shell: /home/vagrant/scala-install.sh
@@ -136,7 +137,7 @@
 - name: Copy setup git and vscode repo script
   copy:
     src: ../files/daffodil-vscode-setup.sh
-    dest: /etc/yum.repos.d/
+    dest: /home/vagrant/
     mode: 0755
     owner: vagrant
     group: vagrant

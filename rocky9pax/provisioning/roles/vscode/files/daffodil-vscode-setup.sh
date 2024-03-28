@@ -7,7 +7,7 @@ read -p "Enter full name: " name
 git config --global user.name "$name"
 
 read - "Enter email address: " email
-git config --global user.email "$email"
+git config --global user.email $email
 
 read -p "Enter GitHub user name: " gname
 git clone https://github.com/$gname/daffodil-vscode.git
