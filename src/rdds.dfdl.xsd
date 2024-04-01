@@ -279,7 +279,69 @@
 	<xs:element name="Polar_Coordinates" >
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element name="DataBlob"  type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="{ ../../Message_Header/Message_Length }" />
+                <xs:element name="Stream_Request_Format" type="xs:int" dfdl:lengthUnits="bits"  dfdl:lengthKind="explicit" dfdl:length="6" />
+                <xs:element name="Stream_Request_ID" type="xs:int" dfdl:lengthUnits="bits"  dfdl:lengthKind="explicit" dfdl:length="10" />
+                <xs:element name="Stream_Format" type="xs:int" dfdl:lengthUnits="bits"  dfdl:lengthKind="explicit" dfdl:length="6" />
+                <xs:element name="Stream_ID" type="xs:int" dfdl:lengthUnits="bits"  dfdl:lengthKind="explicit" dfdl:length="10" />
+                <!-- Word 1 -->
+                <xs:element name="Time_of_Day" >
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Tens_of_Hour" type="unsignedint2" />
+                            <xs:element name="Units_of_Hour" type="unsignedint4" />
+                            <xs:element name="Tens_of_Minute" type="unsignedint3" />
+                            <xs:element name="Units_of_Minute" type="unsignedint4" />
+                            <xs:element name="Tens_of_Seconds" type="unsignedint3" />
+                            <xs:element name="Units_of_Seconds" type="unsignedint4" />
+                            <xs:element name="Hundreds_of_Millseconds" type="unsignedint4" />
+                            <xs:element name="Tens_of_Millseconds" type="unsignedint4" />
+                            <xs:element name="Units_of_Millseconds" type="unsignedint4" />
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <!-- Word 2 -->
+                <xs:element name="CTU_Bits" type="xs:int" dfdl:lengthUnits="bits"  dfdl:lengthKind="explicit" dfdl:length="5" />
+                <xs:element name="Reserved_1" type="xs:int" dfdl:lengthUnits="bits"  dfdl:lengthKind="explicit" dfdl:length="14" />
+                <xs:element name="Self_Test" type="unsignedint1" />
+                <xs:element name="Event_2" type="unsignedint1" />
+                <xs:element name="Event_1" type="unsignedint1" />
+                <xs:element name="Julian_Date" >
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Hundreds" type="unsignedint2" />
+                            <xs:element name="Tens" type="unsignedint4" />
+                            <xs:element name="Units" type="unsignedint4" />
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <!-- Word 3 -->
+                <xs:element name="Reserved_2" type="unsignedint1" />
+                <xs:element name="Azimuth" type="xs:int" dfdl:lengthUnits="bits"  dfdl:lengthKind="explicit" dfdl:length="27" />
+                <xs:element name="Azimuth_Status" type="unsignedint4" />
+                <!-- Word 4 -->
+                <xs:element name="Reserved_3" type="unsignedint1" />
+                <xs:element name="Elevation" type="xs:int" dfdl:lengthUnits="bits"  dfdl:lengthKind="explicit" dfdl:length="27" />
+                <xs:element name="Elevation_Status" type="unsignedint4" />
+                <!-- Word 5 -->
+                <xs:element name="Range_Overflow" type="unsignedint1" />
+                <xs:element name="Range" type="xs:int" dfdl:lengthUnits="bits"  dfdl:lengthKind="explicit" dfdl:length="28" />
+                <xs:element name="Range_Status" type="unsignedint3" />
+                <!-- Word 6 -->
+				<xs:element name="Reserved4" type="unsignedint8" />
+				<xs:element name="Signal_to_Rnoise_Ratio" type="unsignedint8" />
+                <xs:element name="Range_Bandwidth" type="unsignedint3" />
+                <xs:element name="Range_Bandwidth_Mode" type="unsignedint1" />
+                <xs:element name="Elevation_Bandwidth" type="unsignedint2" />
+                <xs:element name="Azimuth_Bandwidth" type="unsignedint2" />
+                <xs:element name="Angle_Bandwidth" type="unsignedint1" />
+                <xs:element name="Pulse_Width" type="unsignedint2" />
+                <xs:element name="Search" type="unsignedint1" />
+                <xs:element name="On_Axis" type="unsignedint1" />
+                <xs:element name="Beacon" type="unsignedint1" />
+                <xs:element name="Transmit_Status" type="unsignedint1" />
+                <xs:element name="Test" type="unsignedint1" />
+                <!-- Word 7 -->
+                <xs:element name="Reserved5" type="unsignedint32" />
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
