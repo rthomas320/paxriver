@@ -303,7 +303,51 @@
 	<xs:element name="CD2_Plot" >
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element name="DataBlob"  type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="{ ../../Message_Header/Message_Length }" />
+				<xs:element name="Year" type="unsignedint16" />
+				<xs:element name="Day" type="unsignedint16" />
+				<xs:element name="Time_Type" type="unsignedint16" />
+				<xs:element name="unused" type="unsignedint16" />
+				<xs:element name="Seconds_of_Day" type="xs:double" />
+				<xs:element name="Header" >
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Blank0" type="unsignedint4" />
+                            <xs:element name="test" type="unsignedint1" />
+                            <xs:element name="Message_Label" type="xs:int" dfdl:lengthUnits="bits"  dfdl:lengthKind="explicit" dfdl:length="9" />
+                            <xs:element name="FAA_Flag" type="unsignedint1" />
+                            <xs:element name="AF_Flag" type="unsignedint1" />
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="FlagsA" >
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Blank1" type="unsignedint4" />
+                            <xs:element name="Range" type="xs:int" dfdl:lengthUnits="bits"  dfdl:lengthKind="explicit" dfdl:length="11" />
+                            <xs:element name="Zero" type="unsignedint1" />
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="FlagsA.5" >
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Blank2" type="unsignedint4" />
+                            <xs:element name="Azimuth" type="xs:int" dfdl:lengthUnits="bits"  dfdl:lengthKind="explicit" dfdl:length="12" />
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="FlagsB" >
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Blank3" type="unsignedint4" />
+                            <xs:element name="AIMS_Present" type="unsignedint1" />
+                            <xs:element name="Zero1" type="unsignedint2" />
+                            <xs:element name="Run_Length" type="unsignedint3" />
+                            <xs:element name="Time_in_Storage" type="xs:int" dfdl:lengthUnits="bits"  dfdl:lengthKind="explicit" dfdl:length="5" />
+                            <xs:element name="Moving_Target_Indicator" type="unsignedint1" />
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
