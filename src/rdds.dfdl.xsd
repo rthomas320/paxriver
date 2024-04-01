@@ -271,7 +271,61 @@
 	<xs:element name="Emitter" >
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element name="DataBlob"  type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="{ ../../Message_Header/Message_Length }" />
+				<xs:element name="Emitter_ID" type="unsignedint16" />
+				<xs:element name="Platform_ID" type="unsignedint16" />
+                <xs:element name="Emitter_Name" type="xs:string" dfdl:textTrimKind="padChar" dfdl:textPadKind="padChar" dfdl:textStringPadCharacter="%NUL;" dfdl:textStringJustification="left"
+                            dfdl:lengthUnits="characters" dfdl:lengthKind="explicit" dfdl:length="64" dfdl:encoding="ISO-8859-1" dfdl:alignmentUnits="bytes" />
+                <xs:element name="Emitter_Mode" type="xs:string" dfdl:textTrimKind="padChar" dfdl:textPadKind="padChar" dfdl:textStringPadCharacter="%NUL;" dfdl:textStringJustification="left"
+                            dfdl:lengthUnits="characters" dfdl:lengthKind="explicit" dfdl:length="64" dfdl:encoding="ISO-8859-1" dfdl:alignmentUnits="bytes" />
+				<xs:element name="Elapsed_Time">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Seconds" type="unsignedint32" />
+                            <xs:element name="Nanoseconds" type="unsignedint32" />
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+				<xs:element name="Event_Kind" type="unsignedint16" />
+				<xs:element name="Radiation_Status" type="unsignedint16" />
+				<xs:element name="Median_Frequency" type="xs:double" />
+				<xs:element name="Freqency_Deviation" type="xs:double" />
+				<xs:element name="Median_PRI" type="xs:double" />
+				<xs:element name="PRI_Deviation" type="xs:double" />
+				<xs:element name="Median_Pulse_Width" type="xs:double" />
+				<xs:element name="Pulse_Width_Deviation" type="xs:double" />
+				<xs:element name="Median_Scan_Period" type="xs:float" />
+				<xs:element name="Scan_Period_Deviation" type="xs:float" />
+				<xs:element name="Median_Effective_Radiated_Power" type="xs:float" />
+				<xs:element name="Effective_Radiated_Power_Deviation" type="xs:float" />
+				<xs:element name="Frequency_Type" type="unsignedint16" />
+				<xs:element name="PRI_Type" type="unsignedint16" />
+				<xs:element name="Pulse_Width_Type" type="unsignedint16" />
+				<xs:element name="Scan_Type" type="unsignedint16" />
+				<xs:element name="Number_of_PRI_Stagger_Steps" type="unsignedint16" />
+				<xs:element name="Chirp_State" type="unsignedint16" />
+				<xs:element name="PRI_Jitter_Percent" type="xs:float" />
+				<xs:element name="PRI_Frame_Rate" type="xs:float" />
+				<xs:element name="Bi-Phase_State" type="unsignedint16" />
+				<xs:element name="Generator_Kind" type="unsignedint16" />
+				<xs:element name="Next_Evernt_Time">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Seconds" type="unsignedint32" />
+                            <xs:element name="Nanoseconds" type="unsignedint32" />
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+				<xs:element name="Following_a_Script" type="unsignedint16" />
+				<xs:element name="IRIG_Time_Tag">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Seconds" type="unsignedint32" />
+                            <xs:element name="Nanoseconds" type="unsignedint32" />
+                            <xs:element name="Validity" type="unsignedint16" />
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+				<xs:element name="Pad" type="unsignedint16" />
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
