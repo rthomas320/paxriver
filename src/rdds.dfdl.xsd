@@ -18,7 +18,7 @@
             	         byteOrder="bigEndian" bitOrder="mostSignificantBitFirst" choiceLengthKind="implicit" lengthKind="implicit" alignment="1" encodingErrorPolicy="replace" 
                          binaryFloatRep="ieee" calendarPatternKind="implicit" documentFinalTerminatorCanBeMissing="yes" 
                          emptyValueDelimiterPolicy="none" escapeSchemeRef="" fillByte="f" floating="no" ignoreCase="no" 
-                         initiatedContent="no" initiator="" leadingSkip="0" separator="" separatorSuppressionPolicy="anyEmpty"  
+                         initiatedContent="no" initiator="" leadingSkip="0" separator="" separatorPolicy="suppressed" 
                          outputNewLine="%CR;%LF;"
                          textStandardZeroRep="0" textStandardInfinityRep="Inf" textStandardExponentRep="E" 
                          textStandardNaNRep="NaN" textNumberPattern="#,##0.###;-#,##0.###" textNumberRounding="explicit" 
@@ -319,12 +319,65 @@
 	<xs:element name="Advertisement" >
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element name="DataBlob"  type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="{ ../../Message_Header/Message_Length }" />
-			</xs:sequence>
+                <xs:element name="Message_Version" type="hexBin16" />
+                <xs:element name="Network_Version" >
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Major" type="unsignedint8" />
+                            <xs:element name="Minor" type="unsignedint8" />
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="Site_ID" type="unsignedint16" />
+                <xs:element name="Facility_ID" type="unsignedint16" />
+                <xs:element name="Node_Desription" type="xs:string" dfdl:textTrimKind="padChar" dfdl:textPadKind="padChar" dfdl:textStringPadCharacter="%NUL;" dfdl:textStringJustification="left"
+                            dfdl:lengthUnits="characters" dfdl:lengthKind="explicit" dfdl:length="64" dfdl:encoding="ISO-8859-1" dfdl:alignmentUnits="bytes" />
+                <xs:element name="Node_address" >
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="network_class" type="unsignedint8" />
+                            <xs:element name="network" type="unsignedint8" />
+                            <xs:element name="subnet" type="unsignedint8" />
+                            <xs:element name="device" type="unsignedint8" />
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="Node_Port" type="unsignedint16" />
+                <xs:element name="Stream_Count" type="unsignedint16" />
+                <xs:element name="Stream_Information" >
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Desription" type="xs:string" dfdl:textTrimKind="padChar" dfdl:textPadKind="padChar" dfdl:textStringPadCharacter="%NUL;" dfdl:textStringJustification="left"
+                                        dfdl:lengthUnits="characters" dfdl:lengthKind="explicit" dfdl:length="64" dfdl:encoding="ISO-8859-1" dfdl:alignmentUnits="bytes" />
+                            <xs:element name="ID" type="unsignedint16" />
+                            <xs:element name="Data_Rate" type="unsignedint16" />
+                            <xs:element name="Node_address" >
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="network_class" type="unsignedint8" />
+                                        <xs:element name="network" type="unsignedint8" />
+                                        <xs:element name="subnet" type="unsignedint8" />
+                                        <xs:element name="device" type="unsignedint8" />
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
 		</xs:complexType>
 	</xs:element>
 
-					
+    <xs:element name="IPv4">
+		<xs:complexType>
+			<xs:sequence>
+                <xs:element name="network_class" type="unsignedint8" />
+                <xs:element name="network" type="unsignedint8" />
+                <xs:element name="subnet" type="unsignedint8" />
+                <xs:element name="device" type="unsignedint8" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
 					
 	<xs:simpleType name="boolean" dfdl:length="1" dfdl:lengthKind="explicit">
 		<xs:restriction base="xs:unsignedInt"/>
