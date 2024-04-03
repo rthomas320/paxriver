@@ -39,25 +39,23 @@
     state: latest
   become: yes
 
-- name: Install MESA Drivers
-  dnf:
-    name:
-      - mesa-dri-drivers
+- name: Install Minimum X Config
+  shell: dnf -q group info base-x
   become: yes
 
-- name: Install Java 17
+- name: Install Java 11
   dnf:
     name:
-      - java-17-openjdk
-      - java-17-openjdk-devel
+      - java-11-openjdk
+      - java-11-openjdk-devel
   become: yes
 
 - name: Set Java Version
-  shell: sudo update-alternatives --set java /usr/lib/jvm/java-17-openjdk-17.0.10.0.7-2.el9.x86_64/bin/java
+  shell: sudo update-alternatives --set java /usr/lib/jvm/java-11-openjdk-11.0.22.0.7-2.el9.x86_64/bin/java
   become: yes
 
 - name: Set Java Compiler Version
-  shell: sudo update-alternatives --set javac /usr/lib/jvm/java-17-openjdk-17.0.10.0.7-2.el9.x86_64/bin/javac
+  shell: sudo update-alternatives --set javac /usr/lib/jvm/java-11-openjdk-11.0.22.0.7-2.el9.x86_64/bin/javac
   become: yes
 
 - name: Copy Java-home.sh 
@@ -189,15 +187,6 @@
     enabled: yes
   become: yes
   
-- name: Install MESA graphics libraries
-  dnf:
-    name:
-      - mesa-libGL
-      - mesa-libEGL
-      - xorg-x11-server-common
-    state: latest
-  become: yes
-
 - name: Install Firefox
   yum:
     name: firefox
@@ -273,4 +262,24 @@
   command: touch /home/vagrant/nifi-toolkit-1.14.0-bin.zip
   args:
     creates: /home/vagrant/nifi-toolkit-1.14.0-bin.zip
+
+- name: Copy VM Exit Script
+  copy:
+    src: ../files/nifistop.sh
+    dest: /usr/local/bin
+    mode: 0755
+    state: present
+    owner: root
+    group: root
+  become: yes
+
+- name: Create symlink for stop nifi script
+  file:
+    src: /usr/local/bin/nifistop.sh
+    path: /usr/local/bin/nifistop
+    state: link
+    owner: root
+    group: root
+  become: yes
+
 
