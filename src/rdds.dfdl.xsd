@@ -38,28 +38,28 @@
 			<xs:sequence>
         		<xs:element ref="Message_Header" />
 				<xs:choice>
-				<xs:choice dfdl:choiceDispatchKey="{ xs:string(Message_Header/Message_Identifier) }">
-					<!--xs:element ref="ERR_00" dfdl:choiceBranchKey="00"/><  Marker 00 is illegal -->
-					<xs:element ref="TSPI" dfdl:choiceBranchKey="1" /><!--  1 = Common TSPI -->
-					<xs:element ref="TIME" dfdl:choiceBranchKey="4"/><!--  4 = Time -->
-					<xs:element ref="Pirate_Weather" dfdl:choiceBranchKey="6"/><!--  6 = Pirate Weather -->
-					<xs:element ref="Reference_Point" dfdl:choiceBranchKey="18"/><!--  18 = Reference Point -->
-					<xs:element ref="Telemetry" dfdl:choiceBranchKey="20"/><!--  20 = Telemetry -->
-					<xs:element ref="VarLen_Radar_Image" dfdl:choiceBranchKey="23"/><!--  23 = VarLen Radar Image -->
-					<xs:element ref="VarLen_TM_Description" dfdl:choiceBranchKey="30"/><!--  30 = VarLen TM Description -->
-					<xs:element ref="VarLen_TM" dfdl:choiceBranchKey="31"/><!--  31 = VarLen TM  -->
-					<xs:element ref="Emitter" dfdl:choiceBranchKey="33"/><!--  33 = Emitter -->
-					<xs:element ref="Polar_Coordinates" dfdl:choiceBranchKey="101"/><!--  101 = Polar Coordinates -->
-					<xs:element ref="Polar_Coordinates_future" dfdl:choiceBranchKey="102"/><!--  102 = Polar Coordinates (future) -->
-					<xs:element ref="CD2_Beacon" dfdl:choiceBranchKey="228"/><!--  228 = CD2 Beacon -->
-					<xs:element ref="CD2_Plot" dfdl:choiceBranchKey="229"/><!--  229 = CD2 Plot -->
-					<xs:element ref="Air_Data_System" dfdl:choiceBranchKey="251"/><!--  251 = Air Data System -->
-					<xs:element ref="Advertisement" dfdl:choiceBranchKey="65534"/><!--  65534 = Advertisement -->
-				</xs:choice>
+                    <xs:choice dfdl:choiceDispatchKey="{ xs:string(Message_Header/Message_Identifier) }">
+                        <!--xs:element ref="ERR_00" dfdl:choiceBranchKey="00"/><  Marker 00 is illegal -->
+                        <xs:element ref="TSPI" dfdl:choiceBranchKey="1" /><!--  1 = Common TSPI -->
+                        <xs:element ref="TIME" dfdl:choiceBranchKey="4"/><!--  4 = Time -->
+                        <xs:element ref="Pirate_Weather" dfdl:choiceBranchKey="6"/><!--  6 = Pirate Weather -->
+                        <xs:element ref="Reference_Point" dfdl:choiceBranchKey="18"/><!--  18 = Reference Point -->
+                        <xs:element ref="Telemetry" dfdl:choiceBranchKey="20"/><!--  20 = Telemetry -->
+                        <xs:element ref="VarLen_Radar_Image" dfdl:choiceBranchKey="23"/><!--  23 = VarLen Radar Image -->
+                        <xs:element ref="VarLen_TM_Description" dfdl:choiceBranchKey="30"/><!--  30 = VarLen TM Description -->
+                        <xs:element ref="VarLen_TM" dfdl:choiceBranchKey="31"/><!--  31 = VarLen TM  -->
+                        <xs:element ref="Emitter" dfdl:choiceBranchKey="33"/><!--  33 = Emitter -->
+                        <xs:element ref="Polar_Coordinates" dfdl:choiceBranchKey="101"/><!--  101 = Polar Coordinates -->
+                        <xs:element ref="Polar_Coordinates_future" dfdl:choiceBranchKey="102"/><!--  102 = Polar Coordinates (future) -->
+                        <xs:element ref="CD2_Beacon" dfdl:choiceBranchKey="228"/><!--  228 = CD2 Beacon -->
+                        <xs:element ref="CD2_Plot" dfdl:choiceBranchKey="229"/><!--  229 = CD2 Plot -->
+                        <xs:element ref="Air_Data_System" dfdl:choiceBranchKey="251"/><!--  251 = Air Data System -->
+                        <xs:element ref="Advertisement" dfdl:choiceBranchKey="65534"/><!--  65534 = Advertisement -->
+                    </xs:choice>
 					<xs:element name="Unknown_Packet_type" >
 						<xs:complexType>
 							<xs:sequence>
-								<xs:element name="DataBlob"  type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="{ ../../Message_Header/Message_Length }" />
+								<xs:element name="DataBlob"  type="xs:hexBinary" dfdl:lengthUnits="bytes" dfdl:lengthKind="explicit" dfdl:length="{ ../../Message_Header/Message_Length }" dfdl:encoding="ISO-8859-1" />
 							</xs:sequence>
 						</xs:complexType>
 					</xs:element>
@@ -263,11 +263,77 @@
 	<xs:element name="VarLen_TM" >
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element name="DataBlob"  type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="{ ../../Message_Header/Message_Length }" />
+				<xs:element name="Telementry_Msg_ID" type="unsignedint16" />
+                <xs:element name="Parameter" maxOccurs="unbounded" minOccurs="1" >
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Type" type="unsignedint4" />
+                            <xs:element name="Length" type="unsignedint8" />
+                            <xs:element name="Tag_ID" type="xs:int" dfdl:lengthUnits="bits" dfdl:lengthKind="explicit" dfdl:length="20" />
+                            <xs:element name="Values" >
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:choice dfdl:choiceDispatchKey="{ xs:string(../Type) }" >
+                                            <xs:sequence     dfdl:choiceBranchKey="0" > <!--   0: illegal -->
+                                                <xs:element name="UNDEF" type="hexBin64" maxOccurs="unbounded" dfdl:occursCountKind="implicit" />
+                                            </xs:sequence>
+                                            <xs:sequence     dfdl:choiceBranchKey="1" > <!--   1: single-precision 32-bit signed integer (int32) -->
+                                                <xs:element name="INT32" type="signedint32" maxOccurs="unbounded" dfdl:occursCountKind="implicit" />
+                                            </xs:sequence>
+                                            <xs:sequence dfdl:choiceBranchKey="2" > <!--   2: single-precision 32-bit unsigned integer (uint32) -->
+                                                <xs:element name="UINT32" type="unsignedint32" maxOccurs="unbounded" dfdl:occursCountKind="implicit" />
+                                            </xs:sequence>
+                                            <xs:sequence dfdl:choiceBranchKey="3"> <!--   3: character string (char) -->
+                                                <xs:element name="String" type="xs:string" dfdl:length="{ ../../Length }" dfdl:lengthKind="explicit" dfdl:alignmentUnits="bytes" dfdl:encoding="ISO-8859-1" />
+                                            </xs:sequence>
+                                            <xs:sequence dfdl:choiceBranchKey="4"> <!--   4: double-precision (64-bit) floating point (real64) -->
+                                                <xs:element name="Real64" type="xs:float" maxOccurs="unbounded" dfdl:occursCountKind="implicit" />
+                                            </xs:sequence>
+                                            <xs:sequence dfdl:choiceBranchKey="5"> <!--   5: double-precision (64-bit) signed integer (int64) -->
+                                                <xs:element name="Int64" type="xs:long" maxOccurs="unbounded" dfdl:occursCountKind="implicit" />
+                                            </xs:sequence>
+                                            <xs:sequence dfdl:choiceBranchKey="6"> <!--   6: double-precision (64-bit) unsigned integer (uint64) -->
+                                                <xs:element name="UInt64" type="xs:unsignedLong" maxOccurs="unbounded" dfdl:occursCountKind="implicit" />
+                                            </xs:sequence>
+                                            <xs:sequence dfdl:choiceBranchKey="7"> <!--   7: 8-bit signed integer (int8) -->
+                                                <xs:element name="Int8" type="signedint8" maxOccurs="unbounded" dfdl:occursCountKind="implicit" />
+                                            </xs:sequence>
+                                            <xs:sequence dfdl:choiceBranchKey="8"> <!--   8: 8-bit unsigned integer (uint8) -->
+                                                <xs:element name="UInt8" type="unsignedint8" maxOccurs="unbounded" dfdl:occursCountKind="implicit" />
+                                            </xs:sequence>
+                                            <xs:sequence dfdl:choiceBranchKey="9"> <!--   9: 16-bit signed integer (int16) -->
+                                                <xs:element name="Int16" type="signedint16" maxOccurs="unbounded" dfdl:occursCountKind="implicit" />
+                                            </xs:sequence>
+                                            <xs:sequence dfdl:choiceBranchKey="10"><!--  10: 16-bit unsigned integer (uint16) -->
+                                                <xs:element name="UInt16" type="unsignedint16" maxOccurs="unbounded" dfdl:occursCountKind="implicit" />
+                                            </xs:sequence>
+                                            <xs:sequence dfdl:choiceBranchKey="11"><!--  11: bit field -->
+                                                <xs:element name="Bitfield" type="hexBin64" maxOccurs="unbounded" dfdl:occursCountKind="implicit" />
+                                            </xs:sequence>
+                                            <xs:sequence dfdl:choiceBranchKey="12"><!--  12: binary-coded decimal (BCD) -->
+                                                <xs:element name="BCD" type="unsignedint16" dfdl:binaryNumberRep="bcd" dfdl:alignmentUnits="bytes" maxOccurs="unbounded" dfdl:occursCountKind="implicit" />
+                                            </xs:sequence>
+                                            <xs:sequence dfdl:choiceBranchKey="13" ><!--  13: Reserved -->
+                                                <xs:element name="Reserved_13" type="hexBin64" maxOccurs="unbounded" dfdl:occursCountKind="implicit" />
+                                            </xs:sequence>
+                                            <xs:sequence dfdl:choiceBranchKey="14" ><!--  13: Reserved -->
+                                                <xs:element name="Reserved_14" type="hexBin64" maxOccurs="unbounded" dfdl:occursCountKind="implicit" />
+                                            </xs:sequence>
+                                            <xs:sequence dfdl:choiceBranchKey="15" ><!--  13: Reserved -->
+                                                <xs:element name="Reserved_15" type="hexBin64" maxOccurs="unbounded" dfdl:occursCountKind="implicit" />
+                                            </xs:sequence>
+                                        </xs:choice>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
 
+                            
 	<xs:element name="Emitter" >
 		<xs:complexType>
 			<xs:sequence>
@@ -403,7 +469,75 @@
 	<xs:element name="Polar_Coordinates_future" >
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element name="DataBlob"  type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="{ ../../Message_Header/Message_Length }" />
+				<xs:element name="Message_Version" type="unsignedint16" />
+				<xs:element name="Entity_ID" type="unsignedint16" />
+				<xs:element name="Entity_Type" type="unsignedint16" />
+                <xs:element name="Bit_Fields.0" >
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Filtered_Data" type="unsignedint1" />
+                            <xs:element name="Recorded_Data" type="unsignedint1" />
+                            <xs:element name="Simulated_Data" type="unsignedint1" />
+                            <xs:element name="Data_Classification" type="unsignedint2" />
+                            <xs:element name="Valid_Range" type="unsignedint1" />
+                            <xs:element name="Test" type="unsignedint1" />
+                            <xs:element name="Transmit_Status" type="unsignedint1" />
+                            <xs:element name="Command_Data_Valid" type="unsignedint1" />
+                            <xs:element name="Reserved" type="xs:int" dfdl:lengthUnits="bits"  dfdl:lengthKind="explicit" dfdl:length="7" />
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+				<xs:element name="Track_Publish_Rate" type="unsignedint16" />
+				<xs:element name="Signal_to_Noise_Ratio" type="unsignedint8" />
+				<xs:element name="Num_of_Integrated_Pulses" type="unsignedint8" />
+                <xs:element name="Bit_Fields.1" >
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Track_Mode" type="unsignedint2" />
+                            <xs:element name="Multi_Filter" type="unsignedint1" />
+                            <xs:element name="Spares" type="xs:int" dfdl:lengthUnits="bits"  dfdl:lengthKind="explicit" dfdl:length="13" />
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+				<xs:element name="System_Spares" type="unsignedint16" />
+				<xs:element name="Subsystem_Status" type="unsignedint16" />
+				<xs:element name="Estimated_Accuracy" type="xs:float" />
+				<xs:element name="Spare" type="unsignedint32" />
+                <xs:element name="Time" type="xs:double" />
+                <xs:element name="Target_Azimuth" type="xs:double" />
+                <xs:element name="Target_Elevation" type="xs:double" />
+                <xs:element name="Target_Range" type="xs:double" />
+                <xs:element name="Track_Status" >
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Azimuth_Status" type="unsignedint3" />
+                            <xs:element name="Elevation_Status" type="unsignedint3" />
+                            <xs:element name="Range_Status" type="unsignedint3" />
+                            <xs:element name="Azimuth_Bandwidth_Mode" type="unsignedint1" />
+                            <xs:element name="Azimuth_Bandwidth_Type" type="unsignedint1" />
+                            <xs:element name="Elevation_Bandwidth_Mode" type="unsignedint1" />
+                            <xs:element name="Elevation_Bandwidth_Type" type="unsignedint1" />
+                            <xs:element name="Range_Bandwidth_Mode" type="unsignedint1" />
+                            <xs:element name="Range_Bandwidth_Type" type="unsignedint1" />
+                            <xs:element name="Reserved" type="unsignedint1" />
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+				<xs:element name="Azimuth_Bandwidth" type="xs:float" />
+				<xs:element name="Elevation_Bandwidth" type="xs:float" />
+				<xs:element name="Range_Bandwidth" type="xs:float" />
+				<xs:element name="Pulse_Width" type="unsignedint16" />
+				<xs:element name="Elevation_Refraction_Correction" type="xs:float" />
+				<xs:element name="Range_Refraction_Correction" type="xs:float" />
+				<xs:element name="Commanded_Azimuth" type="xs:double" />
+				<xs:element name="Commanded_Elevation" type="xs:double" />
+				<xs:element name="Commanded_Range" type="xs:double" />
+				<xs:element name="Instrument_Positon_Flags" type="unsignedint16" />
+				<xs:element name="Latitude" type="xs:double" />
+				<xs:element name="Longitude" type="xs:double" />
+				<xs:element name="Altitude" type="xs:double" />
+				<xs:element name="Ellipsoid_Height" type="xs:double" />
+				<xs:element name="Geoid_Height" type="xs:double" />
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
@@ -549,7 +683,31 @@
 	<xs:element name="Air_Data_System" >
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element name="DataBlob"  type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="{ ../../Message_Header/Message_Length }" />
+				<xs:element name="Elapsed_Time">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Seconds" type="unsignedint32" />
+                            <xs:element name="Nanoseconds" type="unsignedint32" />
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="Mach" type="xs:float" />
+                <xs:element name="True_Airspeed" type="xs:float" />
+                <xs:element name="Dynamic_Pressure" type="xs:float" />
+                <xs:element name="Calibrated_airspeed" type="xs:float" />
+                <xs:element name="Static_Temperature" type="xs:float" />
+                <xs:element name="Pressure_Altitude" type="xs:float" />
+                <xs:element name="Altimeter_Setting" type="xs:float" />
+                <xs:element name="Barometric_Altitude_Rate" type="xs:float" />
+                <xs:element name="Air_Density" type="xs:float" />
+                <xs:element name="Dynamic_Pressure" type="xs:float" />
+                <xs:element name="Measured_True_Airspeed" type="xs:float" />
+                <xs:element name="Total_Air_Temp" type="xs:float" />
+                <xs:element name="Static_Pressure" type="xs:float" />
+                <xs:element name="Barometric_Altitude" type="xs:float" />
+                <xs:element name="Cross_Total_Air_Temp" type="xs:float" />
+                <xs:element name="Speed_of_Sound" type="xs:float" />
+                <xs:element name="extra" type="xs:float" />
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
@@ -606,6 +764,7 @@
 		</xs:complexType>
 	</xs:element>
 
+
     <xs:element name="IPv4">
 		<xs:complexType>
 			<xs:sequence>
@@ -633,6 +792,14 @@
 		<xs:restriction base="xs:unsignedInt"/>
 	</xs:simpleType>
 
+	<xs:simpleType name="unsignedint4" dfdl:length="4" dfdl:lengthKind="explicit">
+		<xs:restriction base="xs:unsignedInt"/>
+	</xs:simpleType>
+
+	<xs:simpleType name="signedint8" dfdl:length="8" dfdl:lengthKind="explicit">
+		<xs:restriction base="xs:int"/>
+	</xs:simpleType>
+
 	<xs:simpleType name="unsignedint8" dfdl:length="8" dfdl:lengthKind="explicit">
 		<xs:restriction base="xs:unsignedInt"/>
 	</xs:simpleType>
@@ -640,6 +807,10 @@
     <xs:simpleType name="unsignedint11" dfdl:length="11" dfdl:lengthKind="explicit">
         <xs:restriction base="xs:unsignedInt"/>
     </xs:simpleType>
+
+	<xs:simpleType name="signedint16" dfdl:length="16" dfdl:lengthKind="explicit">
+		<xs:restriction base="xs:int"/>
+	</xs:simpleType>
 
 	<xs:simpleType name="unsignedint16" dfdl:length="16" dfdl:lengthKind="explicit">
 		<xs:restriction base="xs:unsignedInt"/>
@@ -657,7 +828,19 @@
         <xs:restriction base="xs:hexBinary"/>
     </xs:simpleType>
 
+	<xs:simpleType name="signedint32" dfdl:length="32" dfdl:lengthKind="explicit">
+		<xs:restriction base="xs:int"/>
+	</xs:simpleType>
+
 	<xs:simpleType name="unsignedint32" dfdl:length="32" dfdl:lengthKind="explicit">
+		<xs:restriction base="xs:unsignedInt"/>
+	</xs:simpleType>
+
+	<xs:simpleType name="signedint64" dfdl:length="64" dfdl:lengthKind="explicit">
+		<xs:restriction base="xs:int"/>
+	</xs:simpleType>
+
+	<xs:simpleType name="unsignedint64" dfdl:length="64" dfdl:lengthKind="explicit">
 		<xs:restriction base="xs:unsignedInt"/>
 	</xs:simpleType>
 
