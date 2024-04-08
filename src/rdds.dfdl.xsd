@@ -247,7 +247,65 @@
 	<xs:element name="VarLen_Radar_Image" >
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element name="DataBlob"  type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="{ ../../Message_Header/Message_Length }" />
+				<xs:element name="Message_Type" type="unsignedint8" />
+				<xs:element name="Message_Length" type="unsignedint8" />
+				<xs:element name="Message_SubType" type="unsignedint8" />
+				<xs:element name="Amptype" type="unsignedint8" />
+				<xs:element name="API_Version" type="unsignedint16" />
+				<xs:element name="Count" type="unsignedint16" />
+				<xs:element name="Source_Node" type="unsignedint16" />
+				<xs:element name="Process_ID" type="unsignedint16" />
+                <xs:element name="Timestamp" >
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Microseconds" type="unsignedint32"  />
+                            <xs:element name="Seconds" type="unsignedint32"  />
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="CRC" type="unsignedint32"  />
+                <xs:element name="Latitude" type="xs:double"  />
+                <xs:element name="Longitude" type="xs:double"  />
+                <xs:element name="Position_Status" type="unsignedint16"  />
+                <xs:element name="Time" >
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Microseconds" type="unsignedint32"  />
+                            <xs:element name="Seconds" type="unsignedint32"  />
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="Offset" >
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="X" type="unsignedint16"  />
+                            <xs:element name="Y" type="unsignedint16"  />
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="Image_Rotation" type="xs:float" />
+                <xs:element name="Image_Size" type="signedint32" />
+                <xs:element name="Range_Scale" type="unsignedint32" />
+                <xs:element name="Orientation" type="unsignedint16" />
+                <xs:element name="Orientation_verbose" type="xs:string"
+                            dfdl:inputValueCalc='{      if (xs:string(../Orientation) eq "0") then "Heading" 
+                                                   else if (xs:string(../Orientation) eq "1") then "North" 
+                                                   else if (xs:string(../Orientation) eq "2") then "Course" 
+                                                   else if (xs:string(../Orientation) eq "3") then "True" 
+                                                   else if (xs:string(../Orientation) eq "4") then "User_Rotation"
+                                                   else "Invalid" }' />
+                <xs:element name="Compression" type="unsignedint32" />
+                <xs:element name="Image_Format" type="unsignedint16" />
+                <xs:element name="Image_Format_verbose" type="xs:string"
+                            dfdl:inputValueCalc='{      if (xs:string(../Orientation) eq "0") then "DISP_COORD_FORMAT_XY" 
+                                                   else if (xs:string(../Orientation) eq "1") then "DISP_COORD_FORMAT_RNG_AZ" 
+                                                   else "Invalid"  }' />
+                <xs:element name="Pixels_per_Byte" type="unsignedint32" />
+                <xs:element name="Antenna_RPM" type="unsignedint32" />
+                <xs:element name="Image_Bits" type="unsignedint16" />
+                <xs:sequence>
+                    <xs:element name="Radar_Image_Data" type="xs:hexBinary" dfdl:lengthUnits="bytes" dfdl:lengthKind="explicit" dfdl:length="{ 999 }" /> <!-- RDR_IMAGE_BUF_SIZE -->
+                </xs:sequence>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
