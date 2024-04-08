@@ -255,7 +255,18 @@
 	<xs:element name="VarLen_TM_Description" >
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element name="DataBlob"  type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="{ ../../Message_Header/Message_Length }" />
+				<xs:element name="Telementry_Msg_ID" type="unsignedint16" />
+				<xs:element name="Parameter_Count" type="unsignedint16" />
+                <xs:element name="Parameter" maxOccurs="unbounded" minOccurs="1" >
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Tag_ID" type="unsignedint16"  />
+                            <xs:element name="Name" type="xs:string" dfdl:lengthKind="explicit" dfdl:length="32" dfdl:alignmentUnits="bytes" />
+                            <xs:element name="Units" type="xs:string" dfdl:lengthKind="explicit" dfdl:length="16" dfdl:alignmentUnits="bytes" />
+                            <xs:element name="Description" type="xs:string" dfdl:lengthKind="explicit" dfdl:length="64" dfdl:alignmentUnits="bytes" />
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
