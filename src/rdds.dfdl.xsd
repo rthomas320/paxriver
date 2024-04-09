@@ -236,11 +236,151 @@
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
+
 	<xs:element name="Telemetry" >
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element name="DataBlob"  type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="{ ../../Message_Header/Message_Length }" />
-			</xs:sequence>
+				<xs:element name="Year" type="xs:double" />
+				<xs:element name="Day" type="xs:double" />
+				<xs:element name="Day_nanoseconds" type="xs:double" />
+				<xs:element name="Latiitude_OKM" type="xs:double" />
+				<xs:element name="Longitude_OKM" type="xs:double" />
+				<xs:element name="Altitude_OKM" type="xs:double" />
+				<xs:element name="System_Altitude" type="xs:double" />
+				<xs:element name="Baro_Altitude" type="xs:double" />
+                <xs:element name="ECEF" >
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Position" >
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="X" type="xs:double"  />
+                                        <xs:element name="Y" type="xs:double"  />
+                                        <xs:element name="Z" type="xs:double"  />
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="Velocity" >
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="X" type="xs:double"  />
+                                        <xs:element name="Y" type="xs:double"  />
+                                        <xs:element name="Z" type="xs:double"  />
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="OKM" >
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Velocity" >
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="X" type="xs:double"  />
+                                        <xs:element name="Y" type="xs:double"  />
+                                        <xs:element name="Z" type="xs:double"  />
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+				<xs:element name="Mach" type="xs:double" />
+				<xs:element name="True_Airspeed" type="xs:double" />
+				<xs:element name="Calibrated_Airspeed" type="xs:double" />
+				<xs:element name="Roll_Angle" type="xs:double" />
+				<xs:element name="Pitch_Angle" type="xs:double" />
+				<xs:element name="Yaw" type="xs:double" />
+				<xs:element name="True_Heading" type="xs:double" />
+				<xs:element name="EHE" type="xs:double" />
+				<xs:element name="EVE" type="xs:double" />
+				<xs:element name="Engine_Thrust_Request" type="xs:double" />
+				<xs:element name="Engine_Thrust_Feedback" type="xs:double" />
+				<xs:element name="Fan_Speed" type="xs:double" />
+				<xs:element name="Core_Speed" type="xs:double" />
+				<xs:element name="Inlet_Pressure" type="xs:double" />
+				<xs:element name="Inlet_Temperature" type="xs:double" />
+				<xs:element name="Burner_Pressure" type="xs:double" />
+				<xs:element name="Engine_EGT" type="xs:double" />
+				<xs:element name="Core_Fuel_Flow" type="xs:double" />
+				<xs:element name="Nozzle_Throat_Area" type="xs:double" />
+				<xs:element name="Nozzle_Exit_Area" type="xs:double" />
+				<xs:element name="Left_Leading_Edge_Flaps" type="xs:double" />
+				<xs:element name="Right_Leading_Edge_Flaps" type="xs:double" />
+				<xs:element name="Left_Trailing_Edge_Flaperons" type="xs:double" />
+				<xs:element name="Right_Trailing_Edge_Flaperons" type="xs:double" />
+				<xs:element name="Left_Horizontal_Tail" type="xs:double" />
+				<xs:element name="Right_Horizontal_Tail" type="xs:double" />
+				<xs:element name="Left_Rudder" type="xs:double" />
+				<xs:element name="Right_Rudder" type="xs:double" />
+				<xs:element name="Left_CV_Aileron" type="xs:double" />
+				<xs:element name="Right_CV_Aileron" type="xs:double" />
+				<xs:element name="Left_CV_Spoiler_Position" type="xs:double" />
+				<xs:element name="Right_CV_Spoiler_Position" type="xs:double" />
+				<xs:element name="Refuel_Probe" >
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Fwd" type="xs:double" />
+                            <xs:element name="Aft" type="xs:double" />
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+				<xs:element name="Lift_Fan_Inlet" type="xs:double" />
+				<xs:element name="Auxilliary_Inlet" type="xs:double" />
+				<xs:element name="Nose_Landing_Gear" type="xs:double" />
+				<xs:element name="Lift_Fan_Exhaust" type="xs:double" />
+				<xs:element name="Weapons_Bay" >
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Outboard_LH" type="xs:double" />
+                            <xs:element name="Outboard_RH" type="xs:double" />
+                            <xs:element name="Inboard_LH" type="xs:double" />
+                            <xs:element name="Inboard_RH" type="xs:double" />
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+				<xs:element name="Main_Landing_Gear" >
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Fwd_LH" type="xs:double" />
+                            <xs:element name="Fwd_RH" type="xs:double" />
+                            <xs:element name="Aft_LH" type="xs:double" />
+                            <xs:element name="Aft_RH" type="xs:double" />
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+				<xs:element name="Roll_Control_Nozzle_Door" >
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="LH" type="xs:double" />
+                            <xs:element name="RH" type="xs:double" />
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+				<xs:element name="_3BSD_Door_Engine_Bay_Aft" type="xs:double" />
+				<xs:element name="IPP_Intake" type="xs:double" />
+				<xs:element name="RF_Countermeasures_Door" type="xs:double" />
+				<xs:element name="IR_Countermeasures_Door" type="xs:double" />
+				<xs:element name="Z-axis_Load_Factor" type="xs:double" />
+				<xs:element name="Magnetic_Heading" type="xs:double" />
+				<xs:element name="Speed_Brake" type="xs:double" />
+				<xs:element name="CNI_Status" type="xs:double" />
+				<xs:element name="Radar_Status" type="xs:double" />
+				<xs:element name="RALT_Status" type="xs:double" />
+				<xs:element name="IFFT_Status" type="xs:double" />
+				<xs:element name="TACAN_Status" type="xs:double" />
+				<xs:element name="Tailhook_Door_Position" >
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Aft" type="xs:double" />
+                            <xs:element name="Fwd" type="xs:double" />
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+				<xs:element name="TM_Status" type="xs:double" />
+            </xs:sequence>
 		</xs:complexType>
 	</xs:element>
 
