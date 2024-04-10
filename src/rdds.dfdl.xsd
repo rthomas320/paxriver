@@ -224,7 +224,21 @@
 	<xs:element name="Pirate_Weather" >
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element name="DataBlob"  type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="{ ../../Message_Header/Message_Length }" />
+				<xs:element name="Station_ID" type="unsignedint8" />
+				<xs:element name="Spare_1" type="unsignedint8" />
+                <xs:element name="Station_name" type="xs:string" dfdl:textTrimKind="padChar" dfdl:textPadKind="padChar" dfdl:textStringPadCharacter="%NUL;" dfdl:textStringJustification="left"
+                            dfdl:lengthUnits="characters" dfdl:lengthKind="explicit" dfdl:length="16" dfdl:encoding="ISO-8859-1" dfdl:alignmentUnits="bytes" />
+				<xs:element name="Sensor_Time_Hours" type="xs:double" />
+				<xs:element name="Wind_Direction" type="unsignedint16" />
+				<xs:element name="Wind_Speed" type="xs:float" />
+				<xs:element name="Air_Temp_1_min" type="xs:float" />
+				<xs:element name="RElative_Humidity_1_min" type="unsignedint8" />
+				<xs:element name="Spare_2" type="unsignedint8" />
+				<xs:element name="Baro_Pressure_1_min" type="xs:float" />
+				<xs:element name="Dew_Point_1_min" type="xs:float" />
+				<xs:element name="Sensor_DC_Voltage" type="xs:float" />
+				<xs:element name="Solar_Irradition" type="xs:float" />
+				<xs:element name="Reserved" type="unsignedint32" />
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
@@ -232,7 +246,20 @@
 	<xs:element name="Reference_Point" >
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element name="DataBlob"  type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="{ ../../Message_Header/Message_Length }" />
+				<xs:element name="ID" type="unsignedint16" />
+				<xs:element name="Count_of_Reference_Points" type="unsignedint16" />
+				<xs:element name="Database_version" type="xs:float" />
+                <xs:element name="Short_Name" type="xs:string" dfdl:textTrimKind="padChar" dfdl:textPadKind="padChar" dfdl:textStringPadCharacter="%NUL;" dfdl:textStringJustification="left"
+                            dfdl:lengthUnits="characters" dfdl:lengthKind="explicit" dfdl:length="6" dfdl:encoding="ISO-8859-1" dfdl:alignmentUnits="bytes" />
+                <xs:element name="Long_Name" type="xs:string" dfdl:textTrimKind="padChar" dfdl:textPadKind="padChar" dfdl:textStringPadCharacter="%NUL;" dfdl:textStringJustification="left"
+                            dfdl:lengthUnits="characters" dfdl:lengthKind="explicit" dfdl:length="80" dfdl:encoding="ISO-8859-1" dfdl:alignmentUnits="bytes" />
+				<xs:element name="Latiitude" type="xs:double" />
+				<xs:element name="Longitude" type="xs:double" />
+				<xs:element name="Altitude" type="xs:double" />
+				<xs:element name="Ellipsoid_Height" type="xs:double" />
+				<xs:element name="Geoid_Height" type="xs:double" />
+                <xs:element name="Survey_Date" type="xs:string" dfdl:textTrimKind="padChar" dfdl:textPadKind="padChar" dfdl:textStringPadCharacter="%NUL;" dfdl:textStringJustification="left"
+                            dfdl:lengthUnits="characters" dfdl:lengthKind="explicit" dfdl:length="20" dfdl:encoding="ISO-8859-1" dfdl:alignmentUnits="bytes" />
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
