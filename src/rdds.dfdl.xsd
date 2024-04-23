@@ -37,6 +37,13 @@
         <xs:complexType>
 			<xs:sequence>
         		<xs:element ref="Message_Header" />
+                <xs:element ref="Metadata" maxOccurs="1" minOccurs="0" >
+                    <xs:annotation>
+                        <xs:appinfo source="http://www.ogf.org/dfdl/">
+                            <dfdl:discriminator test="{ ../Message_Header/Flags/Metadata eq 1 }" />
+                        </xs:appinfo>
+                    </xs:annotation>
+                </xs:element>
 				<xs:choice>
                     <xs:choice dfdl:choiceDispatchKey="{ xs:string(Message_Header/Message_Identifier) }">
                         <!--xs:element ref="ERR_00" dfdl:choiceBranchKey="00"/><  Marker 00 is illegal -->
@@ -128,6 +135,34 @@
 		</xs:complexType>
 	</xs:element>
 	
+	<xs:element name="Metadata">
+		<xs:complexType>
+			<xs:sequence>
+                <xs:element name="Header">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Header_Version" type="unsignedint16" />
+                            <xs:element name="Metadata_Id" type="unsignedint16" />
+                            <xs:element name="Metadata_Length" type="unsignedint16" />
+                            <xs:element name="Reserved" type="unsignedint16" />
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+
+                <xs:element name="Tag_Name" type="xs:string" dfdl:textTrimKind="padChar" dfdl:textPadKind="padChar" dfdl:textStringPadCharacter="%NUL;" dfdl:textStringJustification="left"
+                            dfdl:lengthUnits="characters" dfdl:lengthKind="explicit" dfdl:length="16" dfdl:encoding="ISO-8859-1" dfdl:alignmentUnits="bytes" />
+                <xs:element name="LVC" type="unsignedint8" />
+                <xs:element name="Op_Mode" type="unsignedint8" />
+                <xs:element name="Classification" type="unsignedint8" />
+                <xs:element name="Classification_Partition" type="unsignedint8" />
+                <xs:element name="Data_Type" type="unsignedint8" />
+                <xs:element name="Data_Format" type="unsignedint8" />
+                <xs:element name="Reserved" type="unsignedint16" />
+                <xs:element name="Provided_Time" type="xs:double" />
+                <xs:element name="Instrument_Time" type="xs:double" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
 
 	<xs:element name="TSPI"	>
 		<xs:complexType>
