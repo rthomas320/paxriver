@@ -44,6 +44,13 @@
                         </xs:appinfo>
                     </xs:annotation>
                 </xs:element>
+                <xs:element ref="Extended_Message_Header" maxOccurs="1" minOccurs="0" >
+                    <xs:annotation>
+                        <xs:appinfo source="http://www.ogf.org/dfdl/">
+                            <dfdl:discriminator test="{ ../Message_Header/Flags/Extended_Header eq 1 }" />
+                        </xs:appinfo>
+                    </xs:annotation>
+                </xs:element>
 				<xs:choice>
                     <xs:choice dfdl:choiceDispatchKey="{ xs:string(Message_Header/Message_Identifier) }">
                         <!--xs:element ref="ERR_00" dfdl:choiceBranchKey="00"/><  Marker 00 is illegal -->
@@ -160,6 +167,19 @@
                 <xs:element name="Reserved" type="unsignedint16" />
                 <xs:element name="Provided_Time" type="xs:double" />
                 <xs:element name="Instrument_Time" type="xs:double" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="Extended_Message_Header">
+        <xs:complexType>
+			<xs:sequence>
+				<xs:element name="Header_Version"     type="unsignedint16" />
+				<xs:element name="Reserved_1"    type="unsignedint16" />
+				<xs:element name="Reserved_2"  type="unsignedint32" />
+				<xs:element name="Total_Message_Length"  type="unsignedint32" />
+				<xs:element name="Packet_Number"    type="unsignedint16" />
+				<xs:element name="Number_of_Packets" type="unsignedint16" />
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
