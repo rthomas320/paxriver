@@ -9,7 +9,7 @@
 <!-- 
      DFDL Schema for the select components of SCPI protocol.
      Author: Larry Barber, Nteligen, LLC.
-     Version: 0.1
+     Version: 0.2
      Date: March 2024
    -->
     <xs:annotation>
@@ -18,7 +18,7 @@
             	         byteOrder="bigEndian" bitOrder="mostSignificantBitFirst" choiceLengthKind="implicit" lengthKind="implicit" alignment="1" encodingErrorPolicy="replace" 
                          binaryFloatRep="ieee" calendarPatternKind="implicit" documentFinalTerminatorCanBeMissing="yes" 
                          emptyValueDelimiterPolicy="none" escapeSchemeRef="" fillByte="f" floating="no" ignoreCase="no" 
-                         initiatedContent="no" initiator="" leadingSkip="0" separator="" separatorSuppressionPolicy="anyEmpty" 
+                         initiatedContent="no" initiator="" leadingSkip="0" separator=""  separatorSuppressionPolicy="anyEmpty"
                          outputNewLine="%LF;"
                          textStandardZeroRep="0" textStandardInfinityRep="Inf" textStandardExponentRep="E" 
                          textStandardNaNRep="NaN" textNumberPattern="#,##0.###;-#,##0.###" textNumberRounding="explicit" 
@@ -41,20 +41,21 @@
 							<xs:element name="Cmd" maxOccurs="unbounded">
 								<xs:complexType>
 									<xs:sequence  dfdl:separator="%SP;" >
-										<!-- required token separated from any following param by a space -->
-										<!-- array of parts separated by ":" --> 
+										<!-- array of parts separated by " " --> 
 										<xs:element name="elements" minOccurs="1" maxOccurs="1">
 											<xs:complexType>
 												<xs:sequence>
+                                                    <!-- optional initial ":" prefix -->
                                                     <xs:element name="prefix" type="xs:string" maxOccurs="1" minOccurs="0" 
-                                                                dfdl:lengthKind="explicit" dfdl:length="1" dfdl:encoding="ISO-8859-1" >
+                                                                dfdl:lengthKind="pattern" dfdl:lengthPattern="^:" dfdl:encoding="ISO-8859-1" >
                                                         <xs:annotation>
-                                                            <xs:appinfo source="http://www.ogf.org/dfdl/">
+                                                            <xs:appinfo source="http://www.ogf.org/dfdl/" >
                                                                 <dfdl:discriminator test="{ xs:string(.) eq ':' }" />
                                                             </xs:appinfo>
                                                         </xs:annotation>
                                                     </xs:element>
                                                     <xs:sequence  dfdl:separator=":" >
+                   										<!-- array of parts separated by ":" --> 
                                                         <xs:element name="token" type="xs:string" maxOccurs="unbounded" minOccurs="0" dfdl:lengthKind="delimited"/>
                                                     </xs:sequence>
 												</xs:sequence>
@@ -81,9 +82,9 @@
 											<xs:complexType>
 												<xs:sequence>
                                                     <xs:element name="prefix" type="xs:string" maxOccurs="1" minOccurs="0" 
-                                                                dfdl:lengthKind="explicit" dfdl:length="1" dfdl:encoding="ISO-8859-1" >
+                                                                dfdl:lengthKind="pattern" dfdl:lengthPattern="^:" dfdl:encoding="ISO-8859-1" >
                                                         <xs:annotation>
-                                                            <xs:appinfo source="http://www.ogf.org/dfdl/">
+                                                            <xs:appinfo source="http://www.ogf.org/dfdl/" >
                                                                 <dfdl:discriminator test="{ xs:string(.) eq ':' }" />
                                                             </xs:appinfo>
                                                         </xs:annotation>
