@@ -172,8 +172,15 @@
     owner: nifi
     group: nifi
   with_items:
+    - /home/nifi/bin
     - /home/nifi/data/in
     - /home/nifi/data/out
+    - /home/nifi/data/diffs
+    - /home/nifi/data/infosets
+    - /home/nifi/data/original
+    - /home/nifi/data/parsers
+    - /home/nifi/data/schemas
+    - /home/nifi/data/unparsed
     - /home/nifi/data/hold
     - /home/nifi/data/error
     - /home/nifi/data/reports
@@ -187,6 +194,42 @@
     enabled: yes
   become: yes
   
+- name: Copy PaxRiver Nifi Template
+  copy:
+    src: ../files/PaxRiverDaffodil.xml
+    dest: /home/vagrant/Downloads
+    mode: 0644
+    owner: vagrant
+    group: vagrant
+  become: yes
+
+- name: Copy Daffodil Nifi Binary Diff Script
+  copy:
+    src: ../files/bindiff.sh
+    dest: /home/nifi/bin
+    mode: 0755
+    owner: nifi
+    group: nifi
+  become: yes
+
+- name: Copy Daffodil Nifi Append Data Script
+  copy:
+    src: ../files/appenddata.sh
+    dest: /home/nifi/bin
+    mode: 0755
+    owner: nifi
+    group: nifi
+  become: yes
+
+- name: Copy Daffodil Nifi Clean Up Script
+  copy:
+    src: ../files/cleanup.sh
+    dest: /home/nifi/bin
+    mode: 0755
+    owner: nifi
+    group: nifi
+  become: yes
+
 - name: Install Firefox
   yum:
     name: firefox
