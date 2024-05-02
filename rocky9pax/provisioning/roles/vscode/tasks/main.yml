@@ -115,7 +115,11 @@
     creates: /home/vagrant/cs-x86_64-pc-linux
 
 - name: Move cs file to /usr/lib
+<<<<<<< HEAD
   shell: sudo mv /home/vagrant/cs-x86_64-pc-linux /usr/lib/cs
+=======
+  shell: sudo mv cs-x86_64-pc-linux /usr/lib/cs
+>>>>>>> 3b9c8e0cc8eaf2cffcdf89e14b147dd03890e44f
   args:
     creates: /usr/lib/cs
 
