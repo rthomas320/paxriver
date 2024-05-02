@@ -47,13 +47,8 @@
   shell: sudo update-alternatives --set javac /usr/lib/jvm/java-11-openjdk-11.0.22.0.7-2.el9.x86_64/bin/javac
   become: yes
 
-<<<<<<< HEAD
 - name: install Minimum X Config
   shell: sudo dnf -q group info base-x
-=======
-- name: install Server with GUI group
-  shell: sudo dnf -y groupinstall "Server with GUI"
->>>>>>> 3b9c8e0cc8eaf2cffcdf89e14b147dd03890e44f
 
 - name: set default graphical
   shell: sudo systemctl set-default graphical
@@ -120,7 +115,15 @@
     creates: /home/vagrant/cs-x86_64-pc-linux
 
 - name: Move cs file to /usr/lib
+<<<<<<< HEAD
   shell: sudo mv /home/vagrant/cs-x86_64-pc-linux /usr/lib/cs
+=======
+<<<<<<< HEAD
+  shell: sudo mv /home/vagrant/cs-x86_64-pc-linux /usr/lib/cs
+=======
+  shell: sudo mv cs-x86_64-pc-linux /usr/lib/cs
+>>>>>>> 3b9c8e0cc8eaf2cffcdf89e14b147dd03890e44f
+>>>>>>> main
   args:
     creates: /usr/lib/cs
 

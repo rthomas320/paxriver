@@ -82,9 +82,9 @@
 											<xs:complexType>
 												<xs:sequence>
                                                     <xs:element name="prefix" type="xs:string" maxOccurs="1" minOccurs="0" 
-                                                                dfdl:lengthKind="explicit" dfdl:length="1" dfdl:encoding="ISO-8859-1" >
+                                                                dfdl:lengthKind="pattern" dfdl:lengthPattern="^:" dfdl:encoding="ISO-8859-1" >
                                                         <xs:annotation>
-                                                            <xs:appinfo source="http://www.ogf.org/dfdl/">
+                                                            <xs:appinfo source="http://www.ogf.org/dfdl/" >
                                                                 <dfdl:discriminator test="{ xs:string(.) eq ':' }" />
                                                             </xs:appinfo>
                                                         </xs:annotation>
